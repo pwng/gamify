@@ -6,4 +6,7 @@ target
 gamify.iml
 gamify.ipr
 gamify.iws
+**/bundle.js
+**/bundle.js.map
+
 
