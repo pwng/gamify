@@ -47,3 +47,5 @@ var router = (function () {
     };
 
 }());
+
+exports.router = router ;

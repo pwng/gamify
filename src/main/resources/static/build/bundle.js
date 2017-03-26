@@ -49,15 +49,21 @@
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(32);
 	var employeeService = __webpack_require__(178).employeeService;
+	var router = __webpack_require__(179).router;
 	
 	var Header = React.createClass({
 	    displayName: 'Header',
 	
 	    render: function render() {
 	        return React.createElement(
-	            'h1',
-	            { className: 'title' },
-	            this.props.text
+	            'header',
+	            { className: 'bar bar-nav' },
+	            React.createElement('a', { href: '#', className: "icon icon-left-nav pull-left" + (this.props.back === "true" ? "" : " hidden") }),
+	            React.createElement(
+	                'h1',
+	                { className: 'title' },
+	                this.props.text
+	            )
 	        );
 	    }
 	});
@@ -74,7 +80,11 @@
 	        this.props.searchHandler(searchKey);
 	    },
 	    render: function render() {
-	        return React.createElement('input', { type: 'search', value: this.state.symbol, onChange: this.searchHandler });
+	        return React.createElement(
+	            'div',
+	            { className: 'bar bar-standard bar-header-secondary' },
+	            React.createElement('input', { type: 'search', value: this.state.symbol, onChange: this.searchHandler })
+	        );
 	    }
 	});
 	
@@ -84,13 +94,19 @@
 	    render: function render() {
 	        return React.createElement(
 	            'li',
-	            null,
+	            { className: 'table-view-cell media' },
 	            React.createElement(
 	                'a',
 	                { href: "#employees/" + this.props.employee.id },
+	                React.createElement('img', { className: 'media-object small pull-left', src: "pics/" + this.props.employee.firstName + "_" + this.props.employee.lastName + ".jpg" }),
 	                this.props.employee.firstName,
 	                ' ',
-	                this.props.employee.lastName
+	                this.props.employee.lastName,
+	                React.createElement(
+	                    'p',
+	                    null,
+	                    this.props.employee.title
+	                )
 	            )
 	        );
 	    }
@@ -105,7 +121,7 @@
 	        });
 	        return React.createElement(
 	            'ul',
-	            null,
+	            { className: 'table-view' },
 	            items
 	        );
 	    }
@@ -114,26 +130,172 @@
 	var HomePage = React.createClass({
 	    displayName: 'HomePage',
 	
+	    render: function render() {
+	        return React.createElement(
+	            'div',
+	            null,
+	            React.createElement(Header, { text: 'Employee Directory', back: 'false' }),
+	            React.createElement(SearchBar, { searchKey: this.props.searchKey, searchHandler: this.props.searchHandler }),
+	            React.createElement(
+	                'div',
+	                { className: 'content' },
+	                React.createElement(EmployeeList, { employees: this.props.employees })
+	            )
+	        );
+	    }
+	});
+	
+	var EmployeePage = React.createClass({
+	    displayName: 'EmployeePage',
+	
 	    getInitialState: function getInitialState() {
-	        return { employees: [] };
+	        return { employee: {} };
 	    },
-	    searchHandler: function searchHandler(key) {
-	        this.props.service.findByName(key).done(function (result) {
-	            this.setState({ searchKey: key, employees: result });
+	    componentDidMount: function componentDidMount() {
+	        this.props.service.findById(this.props.employeeId).done(function (result) {
+	            this.setState({ employee: result });
 	        }.bind(this));
 	    },
 	    render: function render() {
 	        return React.createElement(
 	            'div',
 	            null,
-	            React.createElement(Header, { text: 'Employee Directory' }),
-	            React.createElement(SearchBar, { searchHandler: this.searchHandler }),
-	            React.createElement(EmployeeList, { employees: this.state.employees })
+	            React.createElement(Header, { text: 'Employee', back: 'true' }),
+	            React.createElement(
+	                'div',
+	                { className: 'card' },
+	                React.createElement(
+	                    'ul',
+	                    { className: 'table-view' },
+	                    React.createElement(
+	                        'li',
+	                        { className: 'table-view-cell media' },
+	                        React.createElement('img', { className: 'media-object big pull-left', src: "pics/" + this.state.employee.firstName + "_" + this.state.employee.lastName + ".jpg" }),
+	                        React.createElement(
+	                            'h1',
+	                            null,
+	                            this.state.employee.firstName,
+	                            ' ',
+	                            this.state.employee.lastName
+	                        ),
+	                        React.createElement(
+	                            'p',
+	                            null,
+	                            this.state.employee.title
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'li',
+	                        { className: 'table-view-cell media' },
+	                        React.createElement(
+	                            'a',
+	                            { href: "tel:" + this.state.employee.officePhone, className: 'push-right' },
+	                            React.createElement('span', { className: 'media-object pull-left icon icon-call' }),
+	                            React.createElement(
+	                                'div',
+	                                { className: 'media-body' },
+	                                'Call Office',
+	                                React.createElement(
+	                                    'p',
+	                                    null,
+	                                    this.state.employee.officePhone
+	                                )
+	                            )
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'li',
+	                        { className: 'table-view-cell media' },
+	                        React.createElement(
+	                            'a',
+	                            { href: "tel:" + this.state.employee.mobilePhone, className: 'push-right' },
+	                            React.createElement('span', { className: 'media-object pull-left icon icon-call' }),
+	                            React.createElement(
+	                                'div',
+	                                { className: 'media-body' },
+	                                'Call Mobile',
+	                                React.createElement(
+	                                    'p',
+	                                    null,
+	                                    this.state.employee.mobilePhone
+	                                )
+	                            )
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'li',
+	                        { className: 'table-view-cell media' },
+	                        React.createElement(
+	                            'a',
+	                            { href: "sms:" + this.state.employee.mobilePhone, className: 'push-right' },
+	                            React.createElement('span', { className: 'media-object pull-left icon icon-sms' }),
+	                            React.createElement(
+	                                'div',
+	                                { className: 'media-body' },
+	                                'SMS',
+	                                React.createElement(
+	                                    'p',
+	                                    null,
+	                                    this.state.employee.mobilePhone
+	                                )
+	                            )
+	                        )
+	                    ),
+	                    React.createElement(
+	                        'li',
+	                        { className: 'table-view-cell media' },
+	                        React.createElement(
+	                            'a',
+	                            { href: "mailto:" + this.state.employee.email, className: 'push-right' },
+	                            React.createElement('span', { className: 'media-object pull-left icon icon-email' }),
+	                            React.createElement(
+	                                'div',
+	                                { className: 'media-body' },
+	                                'Email',
+	                                React.createElement(
+	                                    'p',
+	                                    null,
+	                                    this.state.employee.email
+	                                )
+	                            )
+	                        )
+	                    )
+	                )
+	            )
 	        );
 	    }
 	});
 	
-	ReactDOM.render(React.createElement(HomePage, { service: employeeService }), document.getElementById('app'));
+	var App = React.createClass({
+	    displayName: 'App',
+	
+	    getInitialState: function getInitialState() {
+	        return {
+	            searchKey: '',
+	            employees: [],
+	            page: null
+	        };
+	    },
+	    searchHandler: function searchHandler(searchKey) {
+	        employeeService.findByName(searchKey).done(function (employees) {
+	            this.setState({ searchKey: searchKey, employees: employees, page: React.createElement(HomePage, { searchKey: searchKey, searchHandler: this.searchHandler, employees: employees }) });
+	        }.bind(this));
+	    },
+	    componentDidMount: function componentDidMount() {
+	        router.addRoute('', function () {
+	            this.setState({ page: React.createElement(HomePage, { searchKey: this.state.searchKey, searchHandler: this.searchHandler, employees: this.state.employees }) });
+	        }.bind(this));
+	        router.addRoute('employees/:id', function (id) {
+	            this.setState({ page: React.createElement(EmployeePage, { employeeId: id, service: employeeService }) });
+	        }.bind(this));
+	        router.start();
+	    },
+	    render: function render() {
+	        return this.state.page;
+	    }
+	});
+	
+	ReactDOM.render(React.createElement(App, null), document.getElementById('app'));
 
 /***/ },
 /* 1 */
@@ -21625,6 +21787,63 @@
 	}();
 	
 	exports.employeeService = employeeService;
+
+/***/ },
+/* 179 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	var router = function () {
+	
+	    "use strict";
+	
+	    var routes = [];
+	
+	    function addRoute(route, handler) {
+	
+	        routes.push({ parts: route.split('/'), handler: handler });
+	    }
+	
+	    function load(route) {
+	        window.location.hash = route;
+	    }
+	
+	    function start() {
+	
+	        var path = window.location.hash.substr(1),
+	            parts = path.split('/'),
+	            partsLength = parts.length;
+	
+	        for (var i = 0; i < routes.length; i++) {
+	            var route = routes[i];
+	            if (route.parts.length === partsLength) {
+	                var params = [];
+	                for (var j = 0; j < partsLength; j++) {
+	                    if (route.parts[j].substr(0, 1) === ':') {
+	                        params.push(parts[j]);
+	                    } else if (route.parts[j] !== parts[j]) {
+	                        break;
+	                    }
+	                }
+	                if (j === partsLength) {
+	                    route.handler.apply(undefined, params);
+	                    return;
+	                }
+	            }
+	        }
+	    }
+	
+	    window.onhashchange = start;
+	
+	    return {
+	        addRoute: addRoute,
+	        load: load,
+	        start: start
+	    };
+	}();
+	
+	exports.router = router;
 
 /***/ }
 /******/ ]);
