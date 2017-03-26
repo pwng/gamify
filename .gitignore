@@ -1,0 +1,9 @@
+*.log
+.DS_Store
+**/.DS_Store
+**/node_modules
+target
+gamify.iml
+gamify.ipr
+gamify.iws
+
