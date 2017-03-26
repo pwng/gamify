@@ -2,7 +2,7 @@
 
 const React = require('react');
 const ReactDOM = require('react-dom');
-var employeeService = require('./data.js').employeeService  ;
+var playerService = require('./data.js').playerService  ;
 var router = require('./router.js').router ;
 
 var Header = React.createClass({
@@ -35,25 +35,25 @@ var SearchBar = React.createClass({
     }
 });
 
-var EmployeeListItem = React.createClass({
+var PlayerListItem = React.createClass({
     render: function () {
         return (
             <li className="table-view-cell media">
-                <a href={"#employees/" + this.props.employee.id}>
-                    <img className="media-object small pull-left" src={"pics/" + this.props.employee.firstName + "_" + this.props.employee.lastName + ".jpg" }/>
-                    {this.props.employee.firstName} {this.props.employee.lastName}
-                    <p>{this.props.employee.title}</p>
+                <a href={"#players/" + this.props.player.id}>
+                    <img className="media-object small pull-left" src={"pics/" + this.props.player.firstName + "_" + this.props.player.lastName + ".jpg" }/>
+                    {this.props.player.firstName} {this.props.player.lastName}
+                    <p>{this.props.player.title}</p>
                 </a>
             </li>
         );
     }
 });
 
-var EmployeeList = React.createClass({
+var PlayerList = React.createClass({
     render: function () {
-        var items = this.props.employees.map(function (employee) {
+        var items = this.props.players.map(function (player) {
             return (
-                <EmployeeListItem key={employee.id} employee={employee} />
+                <PlayerListItem key={player.id} player={player} />
             );
         });
         return (
@@ -68,69 +68,69 @@ var HomePage = React.createClass({
     render: function () {
         return (
             <div>
-                <Header text="Employee Directory" back="false"/>
+                <Header text="Gamification" back="false"/>
                 <SearchBar searchKey={this.props.searchKey} searchHandler={this.props.searchHandler}/>
                 <div className="content">
-                    <EmployeeList employees={this.props.employees}/>
+                    <PlayerList players={this.props.players}/>
                 </div>
             </div>
         );
     }
 });
 
-var EmployeePage = React.createClass({
+var PlayerPage = React.createClass({
     getInitialState: function() {
-        return {employee: {}};
+        return {player: {}};
     },
     componentDidMount: function() {
-        this.props.service.findById(this.props.employeeId).done(function(result) {
-            this.setState({employee: result});
+        this.props.service.findById(this.props.playerId).done(function(result) {
+            this.setState({player: result});
         }.bind(this));
     },
     render: function () {
         return (
             <div>
-                <Header text="Employee" back="true"/>
+                <Header text="Player" back="true"/>
                 <div className="card">
                     <ul className="table-view">
                         <li className="table-view-cell media">
-                            <img className="media-object big pull-left" src={"pics/" + this.state.employee.firstName + "_" + this.state.employee.lastName + ".jpg" }/>
-                            <h1>{this.state.employee.firstName} {this.state.employee.lastName}</h1>
-                            <p>{this.state.employee.title}</p>
+                            <img className="media-object big pull-left" src={"pics/" + this.state.player.firstName + "_" + this.state.player.lastName + ".jpg" }/>
+                            <h1>{this.state.player.firstName} {this.state.player.lastName}</h1>
+                            <p>{this.state.player.title}</p>
                         </li>
                         <li className="table-view-cell media">
-                            <a href={"tel:" + this.state.employee.officePhone} className="push-right">
+                            <a href={"tel:" + this.state.player.personalinformation} className="push-right">
                                 <span className="media-object pull-left icon icon-call"></span>
                                 <div className="media-body">
-                                Call Office
-                                    <p>{this.state.employee.officePhone}</p>
+                                Personal Information
+                                    <p>{this.state.player.personalinformation}</p>
                                 </div>
                             </a>
                         </li>
                         <li className="table-view-cell media">
-                            <a href={"tel:" + this.state.employee.mobilePhone} className="push-right">
+                            <a href={"tel:" + this.state.player.course} className="push-right">
                                 <span className="media-object pull-left icon icon-call"></span>
                                 <div className="media-body">
-                                Call Mobile
-                                    <p>{this.state.employee.mobilePhone}</p>
+                                Course
+                                    <p>{this.state.player.course}</p>
                                 </div>
                             </a>
                         </li>
                         <li className="table-view-cell media">
-                            <a href={"sms:" + this.state.employee.mobilePhone} className="push-right">
-                                <span className="media-object pull-left icon icon-sms"></span>
+                            <a href={"sms:" + this.state.player. progress} className="push-right">
+                                <span className="media-object pull-left icon icon-progress"></span>
                                 <div className="media-body">
-                                SMS
-                                    <p>{this.state.employee.mobilePhone}</p>
+                                 Progress
+                                    <p>{this.state.player. progress}</p>
                                 </div>
                             </a>
                         </li>
                         <li className="table-view-cell media">
-                            <a href={"mailto:" + this.state.employee.email} className="push-right">
-                                <span className="media-object pull-left icon icon-email"></span>
+                            <a href={"mailto:" + this.state.player.pbl} className="push-right">
+                                <span className="media-object pull-left icon icon-pbl"></span>
                                 <div className="media-body">
-                                Email
-                                    <p>{this.state.employee.email}</p>
+                                PBL
+                                    <p>{this.state.player.pbl}</p>
                                 </div>
                             </a>
                         </li>
@@ -145,21 +145,21 @@ var App = React.createClass({
     getInitialState: function() {
         return {
             searchKey: '',
-            employees: [],
+            players: [],
             page: null
         }
     },
     searchHandler: function(searchKey) {
-        employeeService.findByName(searchKey).done(function(employees) {
-            this.setState({searchKey:searchKey, employees: employees, page: <HomePage searchKey={searchKey} searchHandler={this.searchHandler} employees={employees}/>});
+        playerService.findByName(searchKey).done(function(players) {
+            this.setState({searchKey:searchKey, players: players, page: <HomePage searchKey={searchKey} searchHandler={this.searchHandler} players={players}/>});
         }.bind(this));
     },
     componentDidMount: function() {
         router.addRoute('', function() {
-            this.setState({page: <HomePage searchKey={this.state.searchKey} searchHandler={this.searchHandler} employees={this.state.employees}/>});
+            this.setState({page: <HomePage searchKey={this.state.searchKey} searchHandler={this.searchHandler} players={this.state.players}/>});
         }.bind(this));
-        router.addRoute('employees/:id', function(id) {
-            this.setState({page: <EmployeePage employeeId={id} service={employeeService}/>});
+        router.addRoute('players/:id', function(id) {
+            this.setState({page: <PlayerPage playerId={id} service={playerService}/>});
         }.bind(this));
         router.start();
     },
@@ -167,7 +167,6 @@ var App = React.createClass({
         return this.state.page;
     }
 });
-
 
 ReactDOM.render(
 	<App/>,

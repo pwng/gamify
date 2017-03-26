@@ -48,7 +48,7 @@
 	
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(32);
-	var employeeService = __webpack_require__(178).employeeService;
+	var playerService = __webpack_require__(178).playerService;
 	var router = __webpack_require__(179).router;
 	
 	var Header = React.createClass({
@@ -88,8 +88,8 @@
 	    }
 	});
 	
-	var EmployeeListItem = React.createClass({
-	    displayName: 'EmployeeListItem',
+	var PlayerListItem = React.createClass({
+	    displayName: 'PlayerListItem',
 	
 	    render: function render() {
 	        return React.createElement(
@@ -97,27 +97,27 @@
 	            { className: 'table-view-cell media' },
 	            React.createElement(
 	                'a',
-	                { href: "#employees/" + this.props.employee.id },
-	                React.createElement('img', { className: 'media-object small pull-left', src: "pics/" + this.props.employee.firstName + "_" + this.props.employee.lastName + ".jpg" }),
-	                this.props.employee.firstName,
+	                { href: "#players/" + this.props.player.id },
+	                React.createElement('img', { className: 'media-object small pull-left', src: "pics/" + this.props.player.firstName + "_" + this.props.player.lastName + ".jpg" }),
+	                this.props.player.firstName,
 	                ' ',
-	                this.props.employee.lastName,
+	                this.props.player.lastName,
 	                React.createElement(
 	                    'p',
 	                    null,
-	                    this.props.employee.title
+	                    this.props.player.title
 	                )
 	            )
 	        );
 	    }
 	});
 	
-	var EmployeeList = React.createClass({
-	    displayName: 'EmployeeList',
+	var PlayerList = React.createClass({
+	    displayName: 'PlayerList',
 	
 	    render: function render() {
-	        var items = this.props.employees.map(function (employee) {
-	            return React.createElement(EmployeeListItem, { key: employee.id, employee: employee });
+	        var items = this.props.players.map(function (player) {
+	            return React.createElement(PlayerListItem, { key: player.id, player: player });
 	        });
 	        return React.createElement(
 	            'ul',
@@ -134,33 +134,33 @@
 	        return React.createElement(
 	            'div',
 	            null,
-	            React.createElement(Header, { text: 'Employee Directory', back: 'false' }),
+	            React.createElement(Header, { text: 'Gamification', back: 'false' }),
 	            React.createElement(SearchBar, { searchKey: this.props.searchKey, searchHandler: this.props.searchHandler }),
 	            React.createElement(
 	                'div',
 	                { className: 'content' },
-	                React.createElement(EmployeeList, { employees: this.props.employees })
+	                React.createElement(PlayerList, { players: this.props.players })
 	            )
 	        );
 	    }
 	});
 	
-	var EmployeePage = React.createClass({
-	    displayName: 'EmployeePage',
+	var PlayerPage = React.createClass({
+	    displayName: 'PlayerPage',
 	
 	    getInitialState: function getInitialState() {
-	        return { employee: {} };
+	        return { player: {} };
 	    },
 	    componentDidMount: function componentDidMount() {
-	        this.props.service.findById(this.props.employeeId).done(function (result) {
-	            this.setState({ employee: result });
+	        this.props.service.findById(this.props.playerId).done(function (result) {
+	            this.setState({ player: result });
 	        }.bind(this));
 	    },
 	    render: function render() {
 	        return React.createElement(
 	            'div',
 	            null,
-	            React.createElement(Header, { text: 'Employee', back: 'true' }),
+	            React.createElement(Header, { text: 'Player', back: 'true' }),
 	            React.createElement(
 	                'div',
 	                { className: 'card' },
@@ -170,18 +170,18 @@
 	                    React.createElement(
 	                        'li',
 	                        { className: 'table-view-cell media' },
-	                        React.createElement('img', { className: 'media-object big pull-left', src: "pics/" + this.state.employee.firstName + "_" + this.state.employee.lastName + ".jpg" }),
+	                        React.createElement('img', { className: 'media-object big pull-left', src: "pics/" + this.state.player.firstName + "_" + this.state.player.lastName + ".jpg" }),
 	                        React.createElement(
 	                            'h1',
 	                            null,
-	                            this.state.employee.firstName,
+	                            this.state.player.firstName,
 	                            ' ',
-	                            this.state.employee.lastName
+	                            this.state.player.lastName
 	                        ),
 	                        React.createElement(
 	                            'p',
 	                            null,
-	                            this.state.employee.title
+	                            this.state.player.title
 	                        )
 	                    ),
 	                    React.createElement(
@@ -189,16 +189,16 @@
 	                        { className: 'table-view-cell media' },
 	                        React.createElement(
 	                            'a',
-	                            { href: "tel:" + this.state.employee.officePhone, className: 'push-right' },
+	                            { href: "tel:" + this.state.player.personalinformation, className: 'push-right' },
 	                            React.createElement('span', { className: 'media-object pull-left icon icon-call' }),
 	                            React.createElement(
 	                                'div',
 	                                { className: 'media-body' },
-	                                'Call Office',
+	                                'Personal Information',
 	                                React.createElement(
 	                                    'p',
 	                                    null,
-	                                    this.state.employee.officePhone
+	                                    this.state.player.personalinformation
 	                                )
 	                            )
 	                        )
@@ -208,16 +208,16 @@
 	                        { className: 'table-view-cell media' },
 	                        React.createElement(
 	                            'a',
-	                            { href: "tel:" + this.state.employee.mobilePhone, className: 'push-right' },
+	                            { href: "tel:" + this.state.player.course, className: 'push-right' },
 	                            React.createElement('span', { className: 'media-object pull-left icon icon-call' }),
 	                            React.createElement(
 	                                'div',
 	                                { className: 'media-body' },
-	                                'Call Mobile',
+	                                'Course',
 	                                React.createElement(
 	                                    'p',
 	                                    null,
-	                                    this.state.employee.mobilePhone
+	                                    this.state.player.course
 	                                )
 	                            )
 	                        )
@@ -227,16 +227,16 @@
 	                        { className: 'table-view-cell media' },
 	                        React.createElement(
 	                            'a',
-	                            { href: "sms:" + this.state.employee.mobilePhone, className: 'push-right' },
-	                            React.createElement('span', { className: 'media-object pull-left icon icon-sms' }),
+	                            { href: "sms:" + this.state.player.progress, className: 'push-right' },
+	                            React.createElement('span', { className: 'media-object pull-left icon icon-progress' }),
 	                            React.createElement(
 	                                'div',
 	                                { className: 'media-body' },
-	                                'SMS',
+	                                'Progress',
 	                                React.createElement(
 	                                    'p',
 	                                    null,
-	                                    this.state.employee.mobilePhone
+	                                    this.state.player.progress
 	                                )
 	                            )
 	                        )
@@ -246,16 +246,16 @@
 	                        { className: 'table-view-cell media' },
 	                        React.createElement(
 	                            'a',
-	                            { href: "mailto:" + this.state.employee.email, className: 'push-right' },
-	                            React.createElement('span', { className: 'media-object pull-left icon icon-email' }),
+	                            { href: "mailto:" + this.state.player.pbl, className: 'push-right' },
+	                            React.createElement('span', { className: 'media-object pull-left icon icon-pbl' }),
 	                            React.createElement(
 	                                'div',
 	                                { className: 'media-body' },
-	                                'Email',
+	                                'PBL',
 	                                React.createElement(
 	                                    'p',
 	                                    null,
-	                                    this.state.employee.email
+	                                    this.state.player.pbl
 	                                )
 	                            )
 	                        )
@@ -272,21 +272,21 @@
 	    getInitialState: function getInitialState() {
 	        return {
 	            searchKey: '',
-	            employees: [],
+	            players: [],
 	            page: null
 	        };
 	    },
 	    searchHandler: function searchHandler(searchKey) {
-	        employeeService.findByName(searchKey).done(function (employees) {
-	            this.setState({ searchKey: searchKey, employees: employees, page: React.createElement(HomePage, { searchKey: searchKey, searchHandler: this.searchHandler, employees: employees }) });
+	        playerService.findByName(searchKey).done(function (players) {
+	            this.setState({ searchKey: searchKey, players: players, page: React.createElement(HomePage, { searchKey: searchKey, searchHandler: this.searchHandler, players: players }) });
 	        }.bind(this));
 	    },
 	    componentDidMount: function componentDidMount() {
 	        router.addRoute('', function () {
-	            this.setState({ page: React.createElement(HomePage, { searchKey: this.state.searchKey, searchHandler: this.searchHandler, employees: this.state.employees }) });
+	            this.setState({ page: React.createElement(HomePage, { searchKey: this.state.searchKey, searchHandler: this.searchHandler, players: this.state.players }) });
 	        }.bind(this));
-	        router.addRoute('employees/:id', function (id) {
-	            this.setState({ page: React.createElement(EmployeePage, { employeeId: id, service: employeeService }) });
+	        router.addRoute('players/:id', function (id) {
+	            this.setState({ page: React.createElement(PlayerPage, { playerId: id, service: playerService }) });
 	        }.bind(this));
 	        router.start();
 	    },
@@ -21744,24 +21744,24 @@
 
 	"use strict";
 	
-	var employeeService = function () {
+	var playerService = function () {
 	
 	    var findById = function findById(id) {
 	        var deferred = $.Deferred();
-	        var employee = null;
-	        var l = employees.length;
+	        var player = null;
+	        var l = players.length;
 	        for (var i = 0; i < l; i++) {
-	            if (employees[i].id == id) {
-	                employee = employees[i];
+	            if (players[i].id == id) {
+	                player = players[i];
 	                break;
 	            }
 	        }
-	        deferred.resolve(employee);
+	        deferred.resolve(player);
 	        return deferred.promise();
 	    },
 	        findByName = function findByName(searchKey) {
 	        var deferred = $.Deferred();
-	        var results = employees.filter(function (element) {
+	        var results = players.filter(function (element) {
 	            var fullName = element.firstName + " " + element.lastName;
 	            return fullName.toLowerCase().indexOf(searchKey.toLowerCase()) > -1;
 	        });
@@ -21770,13 +21770,13 @@
 	    },
 	        findByManager = function findByManager(managerId) {
 	        var deferred = $.Deferred();
-	        var results = employees.filter(function (element) {
+	        var results = players.filter(function (element) {
 	            return managerId === element.managerId;
 	        });
 	        deferred.resolve(results);
 	        return deferred.promise();
 	    },
-	        employees = [{ "id": 1, "firstName": "James", "lastName": "King", "managerId": 0, "managerName": "", "reports": 4, "title": "President and CEO", "department": "Corporate", "mobilePhone": "617-000-0001", "officePhone": "781-000-0001", "email": "jking@fakemail.com", "city": "Boston, MA", "pic": "james_king.jpg", "twitterId": "@fakejking", "blog": "http://coenraets.org" }, { "id": 2, "firstName": "Julie", "lastName": "Taylor", "managerId": 1, "managerName": "James King", "reports": 2, "title": "VP of Marketing", "department": "Marketing", "mobilePhone": "617-000-0002", "officePhone": "781-000-0002", "email": "jtaylor@fakemail.com", "city": "Boston, MA", "pic": "julie_taylor.jpg", "twitterId": "@fakejtaylor", "blog": "http://coenraets.org" }, { "id": 3, "firstName": "Eugene", "lastName": "Lee", "managerId": 1, "managerName": "James King", "reports": 0, "title": "CFO", "department": "Accounting", "mobilePhone": "617-000-0003", "officePhone": "781-000-0003", "email": "elee@fakemail.com", "city": "Boston, MA", "pic": "eugene_lee.jpg", "twitterId": "@fakeelee", "blog": "http://coenraets.org" }, { "id": 4, "firstName": "John", "lastName": "Williams", "managerId": 1, "managerName": "James King", "reports": 3, "title": "VP of Engineering", "department": "Engineering", "mobilePhone": "617-000-0004", "officePhone": "781-000-0004", "email": "jwilliams@fakemail.com", "city": "Boston, MA", "pic": "john_williams.jpg", "twitterId": "@fakejwilliams", "blog": "http://coenraets.org" }, { "id": 5, "firstName": "Ray", "lastName": "Moore", "managerId": 1, "managerName": "James King", "reports": 2, "title": "VP of Sales", "department": "Sales", "mobilePhone": "617-000-0005", "officePhone": "781-000-0005", "email": "rmoore@fakemail.com", "city": "Boston, MA", "pic": "ray_moore.jpg", "twitterId": "@fakermoore", "blog": "http://coenraets.org" }, { "id": 6, "firstName": "Paul", "lastName": "Jones", "managerId": 4, "managerName": "John Williams", "reports": 0, "title": "QA Manager", "department": "Engineering", "mobilePhone": "617-000-0006", "officePhone": "781-000-0006", "email": "pjones@fakemail.com", "city": "Boston, MA", "pic": "paul_jones.jpg", "twitterId": "@fakepjones", "blog": "http://coenraets.org" }, { "id": 7, "firstName": "Paula", "lastName": "Gates", "managerId": 4, "managerName": "John Williams", "reports": 0, "title": "Software Architect", "department": "Engineering", "mobilePhone": "617-000-0007", "officePhone": "781-000-0007", "email": "pgates@fakemail.com", "city": "Boston, MA", "pic": "paula_gates.jpg", "twitterId": "@fakepgates", "blog": "http://coenraets.org" }, { "id": 8, "firstName": "Lisa", "lastName": "Wong", "managerId": 2, "managerName": "Julie Taylor", "reports": 0, "title": "Marketing Manager", "department": "Marketing", "mobilePhone": "617-000-0008", "officePhone": "781-000-0008", "email": "lwong@fakemail.com", "city": "Boston, MA", "pic": "lisa_wong.jpg", "twitterId": "@fakelwong", "blog": "http://coenraets.org" }, { "id": 9, "firstName": "Gary", "lastName": "Donovan", "managerId": 2, "managerName": "Julie Taylor", "reports": 0, "title": "Marketing Manager", "department": "Marketing", "mobilePhone": "617-000-0009", "officePhone": "781-000-0009", "email": "gdonovan@fakemail.com", "city": "Boston, MA", "pic": "gary_donovan.jpg", "twitterId": "@fakegdonovan", "blog": "http://coenraets.org" }, { "id": 10, "firstName": "Kathleen", "lastName": "Byrne", "managerId": 5, "managerName": "Ray Moore", "reports": 0, "title": "Sales Representative", "department": "Sales", "mobilePhone": "617-000-0010", "officePhone": "781-000-0010", "email": "kbyrne@fakemail.com", "city": "Boston, MA", "pic": "kathleen_byrne.jpg", "twitterId": "@fakekbyrne", "blog": "http://coenraets.org" }, { "id": 11, "firstName": "Amy", "lastName": "Jones", "managerId": 5, "managerName": "Ray Moore", "reports": 0, "title": "Sales Representative", "department": "Sales", "mobilePhone": "617-000-0011", "officePhone": "781-000-0011", "email": "ajones@fakemail.com", "city": "Boston, MA", "pic": "amy_jones.jpg", "twitterId": "@fakeajones", "blog": "http://coenraets.org" }, { "id": 12, "firstName": "Steven", "lastName": "Wells", "managerId": 4, "managerName": "John Williams", "reports": 0, "title": "Software Architect", "department": "Engineering", "mobilePhone": "617-000-0012", "officePhone": "781-000-0012", "email": "swells@fakemail.com", "city": "Boston, MA", "pic": "steven_wells.jpg", "twitterId": "@fakeswells", "blog": "http://coenraets.org" }];
+	        players = [{ "id": 1, "firstName": "James", "lastName": "King", "managerId": 0, "managerName": "", "reports": 4, "title": "President and CEO", "department": "Corporate", "mobilePhone": "617-000-0001", "officePhone": "781-000-0001", "email": "jking@fakemail.com", "city": "Boston, MA", "pic": "james_king.jpg", "twitterId": "@fakejking", "blog": "http://coenraets.org" }, { "id": 2, "firstName": "Julie", "lastName": "Taylor", "managerId": 1, "managerName": "James King", "reports": 2, "title": "VP of Marketing", "department": "Marketing", "mobilePhone": "617-000-0002", "officePhone": "781-000-0002", "email": "jtaylor@fakemail.com", "city": "Boston, MA", "pic": "julie_taylor.jpg", "twitterId": "@fakejtaylor", "blog": "http://coenraets.org" }, { "id": 3, "firstName": "Eugene", "lastName": "Lee", "managerId": 1, "managerName": "James King", "reports": 0, "title": "CFO", "department": "Accounting", "mobilePhone": "617-000-0003", "officePhone": "781-000-0003", "email": "elee@fakemail.com", "city": "Boston, MA", "pic": "eugene_lee.jpg", "twitterId": "@fakeelee", "blog": "http://coenraets.org" }, { "id": 4, "firstName": "John", "lastName": "Williams", "managerId": 1, "managerName": "James King", "reports": 3, "title": "VP of Engineering", "department": "Engineering", "mobilePhone": "617-000-0004", "officePhone": "781-000-0004", "email": "jwilliams@fakemail.com", "city": "Boston, MA", "pic": "john_williams.jpg", "twitterId": "@fakejwilliams", "blog": "http://coenraets.org" }, { "id": 5, "firstName": "Ray", "lastName": "Moore", "managerId": 1, "managerName": "James King", "reports": 2, "title": "VP of Sales", "department": "Sales", "mobilePhone": "617-000-0005", "officePhone": "781-000-0005", "email": "rmoore@fakemail.com", "city": "Boston, MA", "pic": "ray_moore.jpg", "twitterId": "@fakermoore", "blog": "http://coenraets.org" }, { "id": 6, "firstName": "Paul", "lastName": "Jones", "managerId": 4, "managerName": "John Williams", "reports": 0, "title": "QA Manager", "department": "Engineering", "mobilePhone": "617-000-0006", "officePhone": "781-000-0006", "email": "pjones@fakemail.com", "city": "Boston, MA", "pic": "paul_jones.jpg", "twitterId": "@fakepjones", "blog": "http://coenraets.org" }, { "id": 7, "firstName": "Paula", "lastName": "Gates", "managerId": 4, "managerName": "John Williams", "reports": 0, "title": "Software Architect", "department": "Engineering", "mobilePhone": "617-000-0007", "officePhone": "781-000-0007", "email": "pgates@fakemail.com", "city": "Boston, MA", "pic": "paula_gates.jpg", "twitterId": "@fakepgates", "blog": "http://coenraets.org" }, { "id": 8, "firstName": "Lisa", "lastName": "Wong", "managerId": 2, "managerName": "Julie Taylor", "reports": 0, "title": "Marketing Manager", "department": "Marketing", "mobilePhone": "617-000-0008", "officePhone": "781-000-0008", "email": "lwong@fakemail.com", "city": "Boston, MA", "pic": "lisa_wong.jpg", "twitterId": "@fakelwong", "blog": "http://coenraets.org" }, { "id": 9, "firstName": "Gary", "lastName": "Donovan", "managerId": 2, "managerName": "Julie Taylor", "reports": 0, "title": "Marketing Manager", "department": "Marketing", "mobilePhone": "617-000-0009", "officePhone": "781-000-0009", "email": "gdonovan@fakemail.com", "city": "Boston, MA", "pic": "gary_donovan.jpg", "twitterId": "@fakegdonovan", "blog": "http://coenraets.org" }, { "id": 10, "firstName": "Kathleen", "lastName": "Byrne", "managerId": 5, "managerName": "Ray Moore", "reports": 0, "title": "Sales Representative", "department": "Sales", "mobilePhone": "617-000-0010", "officePhone": "781-000-0010", "email": "kbyrne@fakemail.com", "city": "Boston, MA", "pic": "kathleen_byrne.jpg", "twitterId": "@fakekbyrne", "blog": "http://coenraets.org" }, { "id": 11, "firstName": "Amy", "lastName": "Jones", "managerId": 5, "managerName": "Ray Moore", "reports": 0, "title": "Sales Representative", "department": "Sales", "mobilePhone": "617-000-0011", "officePhone": "781-000-0011", "email": "ajones@fakemail.com", "city": "Boston, MA", "pic": "amy_jones.jpg", "twitterId": "@fakeajones", "blog": "http://coenraets.org" }, { "id": 12, "firstName": "Steven", "lastName": "Wells", "managerId": 4, "managerName": "John Williams", "reports": 0, "title": "Software Architect", "department": "Engineering", "mobilePhone": "617-000-0012", "officePhone": "781-000-0012", "email": "swells@fakemail.com", "city": "Boston, MA", "pic": "steven_wells.jpg", "twitterId": "@fakeswells", "blog": "http://coenraets.org" }];
 	
 	    // The public API
 	    return {
@@ -21786,7 +21786,7 @@
 	    };
 	}();
 	
-	exports.employeeService = employeeService;
+	exports.playerService = playerService;
 
 /***/ },
 /* 179 */
